@@ -15,4 +15,4 @@ The AS2201 is a PWM-dimmable, 4 digit, 7-segment display driver. It can be fed w
 
 ## Misc
 - Naming: AS2201 = My initials (**A**. **S**.) + month of development 20**22**/**01**
-- License: Creative Commons  (CC-BY)
+- License: Creative Commons  (CC-BY-SA)
