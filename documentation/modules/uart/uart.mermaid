@@ -1,0 +1,6 @@
+
+graph LR
+  IDLE[wait for falling edge] --> STARTBIT[read start bit];
+  STARTBIT --> DATA[read data bits];
+  DATA -- repeat 8x --> DATA;
+  DATA --> STOP[wait out stop bits];
