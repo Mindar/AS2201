@@ -22,7 +22,7 @@ initial begin
 
 	// Load test data from file
 	$display("Loading file");
-	testfile = $fopenr("uart_rx.txt");
+	testfile = $fopenr("./testdata/uart_rx.txt");
 
 
 	$display("nsPs %d", nanosecondsPerSec);
