@@ -17,6 +17,8 @@ reg [3:0] bit_ctr;
 reg [1:0] cur_state;
 reg [15:0] ctr;
 
+wire dbg_tx = (ctr == bit_duration);
+
 always @ (posedge clk)
 	if(rst) begin
 		tx <= 1;
@@ -27,6 +29,7 @@ always @ (posedge clk)
 		txdata <= 0;
 		bit_ctr <= 0;
 	end else begin
+		ctr <= ctr + 1;
 		case(cur_state)
 			STATE_IDLE: begin
 				tx <= 1;
@@ -41,17 +44,15 @@ always @ (posedge clk)
 			end
 			STATE_STARTBIT: begin
 				tx <= 0;
-				ctr <= ctr + 1;
 				if(ctr == bit_duration) begin
 					ctr <= 0;
 					cur_state <= STATE_DATABITS;
 				end
 			end
 			STATE_DATABITS: begin
-				ctr <= ctr + 1;
 
 				// write current payload bit to output
-				tx <= txdata[7 - bit_ctr];
+				tx <= txdata[bit_ctr];
 
 
 				if(ctr == bit_duration) begin
@@ -66,7 +67,6 @@ always @ (posedge clk)
 				end
 			end
 			STATE_STOPBITS: begin
-				ctr <= ctr + 1;
 				case (stopbits)
 					2'b00: begin
 						if(ctr == bit_duration >> 1) begin
