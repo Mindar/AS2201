@@ -17,8 +17,6 @@ reg [3:0] bit_ctr;
 reg [1:0] cur_state;
 reg [15:0] ctr;
 
-wire dbg_tx = (ctr == bit_duration);
-
 always @ (posedge clk)
 	if(rst) begin
 		tx <= 1;
