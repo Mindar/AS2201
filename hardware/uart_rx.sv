@@ -31,11 +31,12 @@ always @ (posedge clk) begin
 		// set outputs to 0
 		data <= 0;
 		data_ready <= 0;
+		cur_state <= STATE_IDLE;
 	end else begin
 		
 		// Shift register of past rx values for filtering etc
 		rx_shift_reg <= {rx, rx_shift_reg[3:1]};
-		ctr = ctr + 1;
+		ctr <= ctr + 1;
 	
 		// rx state machine here
 		case(cur_state)
@@ -46,7 +47,7 @@ always @ (posedge clk) begin
 					cur_state <= STATE_RECEIVE_START;
 				end
 
-				ctr <= 3;
+				ctr <= 4;
 				data_ready <= 0;
 				bit_ctr <= 0;
 				
@@ -77,20 +78,18 @@ always @ (posedge clk) begin
 
 					// shift in the bit that was read
 					data <= {rx, data[7:1]}; 
-				end  
+				end
 
 				if(ctr == bit_duration) begin
 					// at this point the current bit was read, we can either read the next data bit or the stop bit(s)
+					// either way, the counter needs to reset to 0
+					ctr <= 0;
 
 					// we have read all 8 databits, read stop bit next
 					if(bit_ctr == 8) begin
 						cur_state <= STATE_STOPBITS;
-						ctr <= 0;
-					end else begin
-						ctr <= 0;
 					end
 				end
-				// rx was low for long enough to count as uart start bit, now we wait for the START_BIT_LENGTH + half baud length, then go to STATE_RECEIVE_DATA
 			end
 			STATE_STOPBITS: begin
 				// Count to stop bit duration, then reset state to idle
