@@ -22,6 +22,14 @@ uart_1:
 	iverilog -g2012 -o ./test/uart_1 ./hardware/uart_tb.sv
 	vvp ./test/uart_1
 
+display1:
+	iverilog -g2012 -o ./test/display_driver ./hardware/display_driver_tb.sv
+	vvp ./test/display_driver
+
+bcd:
+	iverilog -g2012 -o ./test/bcd ./hardware/bcd_encoder_tb.sv
+	vvp ./test/bcd
+
 documentation:
 	wavedrom-cli -i ./documentation/modules/uart/registers/control_register.json -s ./documentation/modules/uart/registers/control_register.svg
 	wavedrom-cli -i ./documentation/modules/uart/registers/control_register.json -p ./documentation/modules/uart/registers/control_register.png
