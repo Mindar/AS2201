@@ -50,10 +50,7 @@ always @ (posedge clk) begin
 				ctr <= 4;
 				data_ready <= 0;
 				bit_ctr <= 0;
-				
-				//if(!data_ready) begin
-					data <= 0;
-				//end
+				data <= 0;
 			end
 			STATE_RECEIVE_START: begin
 				if(rx != 0 && ctr < start_bit_duration) begin 
